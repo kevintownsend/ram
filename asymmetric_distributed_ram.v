@@ -28,6 +28,10 @@ generate for(g = 0; g < RATIO; g = g + 1) begin
 end
 endgenerate
 
-assign out = ram_out[addr_b[LOG2_RATIO-2:0]];
+generate if(RATIO == 1)
+        assign out = ram_out[0];
+    else
+        assign out = ram_out[addr_b[LOG2_RATIO-2:0]];
+endgenerate
 `include "common.vh"
 endmodule
