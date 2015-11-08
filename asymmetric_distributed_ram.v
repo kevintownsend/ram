@@ -15,16 +15,15 @@ input [WIDTH_IN - 1:0] in;
 input [ADDR_B_WIDTH - 1:0] addr_b;
 output [WIDTH_OUT - 1:0] out;
 
-reg [WIDTH_OUT - 1:0] ram_out [0: RATIO - 1];
+wire [WIDTH_OUT - 1:0] ram_out [0: RATIO - 1];
 genvar g;
-generate for(g = 0; g < RATIO; g = g + 1) begin
+generate for(g = 0; g < RATIO; g = g + 1) begin: genram
     reg [WIDTH_OUT - 1:0] ram [0:DEPTH_IN - 1];
     always @(posedge clk) begin
         if(we)
             ram[addr_a] <= in[(g+1)*WIDTH_OUT - 1 -: WIDTH_OUT];
     end
-    always @*
-        ram_out[g] = ram[addr_b[ADDR_B_WIDTH - 1 -:ADDR_A_WIDTH]];
+    assign ram_out[g] = ram[addr_b[ADDR_B_WIDTH - 1 -:ADDR_A_WIDTH]];
 end
 endgenerate
 
